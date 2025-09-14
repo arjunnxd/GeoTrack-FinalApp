@@ -295,8 +295,8 @@
         /* SOS button (above stop button) */
         .sos-btn {
           position: absolute;
-          top: 6%; /* place above stop button */
-          left: 22%;
+          top: 4% !important; /* place above stop button */
+          left: 20% !important;
           transform: translateX(-50%);
           z-index: 2000;
           text-align: center;
@@ -560,14 +560,11 @@
 
     <!-- 🚨 SOS Button -->
     <a href="javascript:void(0)" id="sos-btn" class="sos-btn">
-      <img
-        src="{{ url_for('static', filename='../static/icons/sos.png') }}"
-        alt=""
-        srcset=""
-        style="height: 50px; width: 50px"
-      />
-      <!-- <div class="btn-label">SOS</div> -->
-    </a>
+  <div class="circle-btn" style="background-color: red; color: white;">
+    SOS
+  </div>
+  <!-- <div class="btn-label">SOS</div> -->
+</a>
 
     <!-- 🚨 SOS Popup -->
     <div id="sos-popup">
@@ -661,7 +658,19 @@ window.addEventListener("load", () => {
 
   }, 10000);
 });
-
+document.getElementById("sos-btn").addEventListener("click", () => {
+  const popup = document.getElementById("sos-popup");
+  popup.style.display = "block";
+  // After 2 seconds, go to emergency.html
+  setTimeout(() => {
+    window.location.href = "{{ url_for('emergency') }}";
+  }, 2000);
+});
+  // Always hide SOS popup when page loads
+window.addEventListener("pageshow", () => {
+  const popup = document.getElementById("sos-popup");
+  if (popup) popup.style.display = "none";
+});
 
 </script>
 
