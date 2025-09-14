@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <style>
+      /* Override the general screens-get-started for verification page */
+      .screens-get-started {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 431px !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important; /* Position content at TOP */
+        align-items: center !important;
+        overflow: hidden !important; /* NO scroll */
+        box-sizing: border-box !important;
+        position: relative !important;
+        background: linear-gradient(180deg, rgba(203, 216, 200, 1) 0%, rgba(248, 251, 247, 1) 100%) !important;
+      }
+
+      /* Header positioning and spacing */
+      .screens-get-started .header {
+        display: flex !important;
+        height: auto !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 8px 16px !important;
+        margin-bottom: 16px !important;
+        position: relative !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Progress indicator spacing */
+      .screens-get-started .progress-indicator {
+        display: flex !important;
+        width: 100% !important;
+        max-width: 364px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding: 0 32px !important;
+        margin-bottom: 24px !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Main content area - ensure it fits */
+      .screens-get-started .content-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 24px !important;
+        position: relative !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        flex: 1 !important;
+        justify-content: space-between !important;
+        max-height: calc(100vh - 200px) !important;
+        overflow: visible !important;
+      }
+
+      /* Form container */
+      .screens-get-started .form {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 24px !important;
+        position: relative !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* OTP container - ensure proper sizing */
+      .screens-get-started .otp-container {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        margin: 20px 0 !important;
+        width: 100% !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Individual OTP input sizing */
+      .screens-get-started .otp-input {
+        width: 45px !important;
+        height: 50px !important;
+        font-size: 1.4rem !important;
+        text-align: center !important;
+        font-weight: bold !important;
+        color: #3c4d44 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #ccc !important;
+        border-radius: 8px !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Continue button */
+      .screens-get-started .button {
+        all: unset !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding: 12px 24px !important;
+        position: relative !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        flex-shrink: 0 !important;
+        background-color: #3c4d44 !important;
+        border-radius: 12px !important;
+        margin-top: auto !important;
+        cursor: pointer !important;
+      }
+
+      /* Button text */
+      .screens-get-started .button .text {
+        position: relative !important;
+        width: fit-content !important;
+        font-family: Arial, sans-serif !important;
+        font-weight: 500 !important;
+        color: white !important;
+        font-size: 16px !important;
+        white-space: nowrap !important;
+      }
+
+      /* Mobile responsive */
+      @media screen and (max-width: 480px) {
+        .screens-get-started {
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: none !important;
+          padding: 16px !important;
+        }
+
+        .screens-get-started .otp-input {
+          width: 40px !important;
+          height: 45px !important;
+        }
+      }
+
+      /* Force no body scroll */
+      body, html {
+        overflow: hidden !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        /* 2nd css */
+.screens-get-started {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 431px !important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important; /* Position content at TOP */
+  align-items: center !important;
+  overflow: hidden !important; /* NO scroll */
+  box-sizing: border-box !important;
+  position: relative !important;
+  background: linear-gradient(180deg, rgba(203, 216, 200, 1) 0%, rgba(248, 251, 247, 1) 100%) !important;
+}
+
+/* Header positioning and spacing */
+.screens-get-started .header {
+  display: flex !important;
+  height: auto !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 16px !important; /* Reduced padding */
+  margin-bottom: 16px !important; /* Controlled spacing */
+  position: relative !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  flex-shrink: 0 !important; /* Prevent shrinking */
+  box-sizing: border-box !important;
+}
+
+/* Progress indicator spacing */
+.screens-get-started .progress-indicator {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 364px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 32px !important;
+  margin-bottom: 24px !important; /* Controlled spacing */
+  position: relative !important;
+  flex-shrink: 0 !important; /* Prevent shrinking */
+}
+
+/* Main content area - ensure it fits */
+.screens-get-started .content-2 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 24px !important;
+  position: relative !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  flex: 1 !important; /* Take remaining space */
+  justify-content: space-between !important; /* Distribute space */
+  max-height: calc(100vh - 200px) !important; /* Ensure it fits */
+  overflow: visible !important;
+}
+
+/* Form container */
+.screens-get-started .form {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 24px !important;
+  position: relative !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  flex-shrink: 0 !important;
+}
+
+/* Form content spacing */
+.screens-get-started .content-3 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  position: relative !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  gap: 8px !important; /* Reduced gap */
+}
+
+/* Form field spacing */
+.screens-get-started .form-field {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 4px !important; /* Reduced gap */
+  position: relative !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  flex-shrink: 0 !important;
+}
+
+/* OTP container - ensure proper sizing */
+.screens-get-started .otp-container {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin: 20px 0 !important; /* Controlled margins */
+  width: 100% !important;
+  flex-shrink: 0 !important;
+}
+
+/* Individual OTP input sizing */
+.screens-get-started .otp-input {
+  width: 45px !important;
+  height: 50px !important;
+  font-size: 1.4rem !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  color: #3c4d44 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Continue button - ensure it's at bottom but visible */
+.screens-get-started .button {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 12px 24px !important;
+  position: relative !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  
+  flex-shrink: 0 !important; /* Prevent shrinking */
+  background-color: #3c4d44 !important;
+  border-radius: 12px !important;
+  margin-top: auto !important; /* Push to bottom of available space */
+  cursor: pointer !important;
+}
+
+/* Button text */
+.screens-get-started .button .text {
+  position: relative !important;
+  width: fit-content !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: 500 !important;
+  color: white !important;
+  font-size: 16px !important;
+  white-space: nowrap !important;
+}
+
+/* Remove any unnecessary margins/padding that might cause overflow */
+.screens-get-started * {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+
+/* Ensure mobile viewport doesn't zoom */
+@media screen and (max-width: 480px) {
+  .screens-get-started {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    padding: 16px !important;
+  }
+
+  .screens-get-started .otp-input {
+    width: 40px !important;
+    height: 45px !important;
+    gap: 8px !important;
+  }
+}
+
+      }
+    </style>
+  <body>
+    <div class="screens-get-started">
+      <div class="header">
+        <a href="{{ url_for('vehicle_info') }}"><div class="container"><img class="arrow-left" src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}" /></div></a>
+        <div class="div">
+          <div class="title">Verification</div>
+        </div>
+        <div class="content"><div class="text-wrapper">3/3</div></div>
+      </div>
+      <div class="progress-indicator">
+        <div class="bar"></div>
+        <div class="bar-2"></div>
+        <div class="bar-3"></div>
+      </div>
+      <div class="content-2">
+        <div class="form">
+          <div class="content-3">
+            <div class="form-field">
+              <div class="label"><p class="p">Enter your 6 digit code</p></div>
+            </div>
+            <div class="form-field">
+              <div class="label"><div class="label-2">Sent to <span id ="phone-display"></span> </div></div>
+            </div>
+          </div>
+          <div class="otp-container">
+              <input type="tel" class="otp-input" maxlength="1">
+              <input type="tel" class="otp-input" maxlength="1">
+              <input type="tel" class="otp-input" maxlength="1">
+              <input type="tel" class="otp-input" maxlength="1">
+              <input type="tel" class="otp-input" maxlength="1">
+              <input type="tel" class="otp-input" maxlength="1">
+            </div>
+        </div>
+        <button href="#" id="verifyBtn" class="button">
+        <div class="text">Continue</div>
+          <div class="icon">
+          <img class="arrow-right" src="{{ url_for('static', filename='../static/icons/arrow-right (2).png') }}" />
+        </div>
+        </button>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Show phone number
+        document.getElementById('phone-display').textContent = localStorage.getItem('phone') || 'XXXXXXX';
+
+        // OTP input behavior
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+          input.addEventListener('keydown', (event) => {
+            if (event.key === 'Backspace' && input.value === '' && index > 0) {
+              otpInputs[index - 1].focus();
+            }
+          });
+          input.addEventListener('input', () => {
+            input.value = input.value.replace(/[^0-9]/g, '');
+            if (input.value !== '' && index < otpInputs.length - 1) {
+              otpInputs[index + 1].focus();
+            }
+          });
+        });
+
+        // Auto-send OTP when page loads
+        const userId = localStorage.getItem('userId');
+        const phone = localStorage.getItem('phone');
+        if (userId && phone) {
+          await fetch('/send_otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, phone })
+          });
+        }
+
+        // Combine OTP
+        function getOtp() {
+          return Array.from(otpInputs).map(input => input.value).join('');
+        }
+
+        // Verify OTP
+        document.getElementById('verifyBtn').addEventListener('click', async (e) => {
+          e.preventDefault();
+
+          const otp = getOtp();
+          const userId = localStorage.getItem('userId');
+          const vehicleInfo = JSON.parse(localStorage.getItem('vehicleInfo'));
+
+          if (!otp || otp.length !== 6) {
+            alert('Please enter the 6-digit OTP');
+            return;
+          }
+
+          try {
+            const response = await fetch("{{ url_for('verify_otp') }}", {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId, otp, vehicleInfo })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              alert('Vehicle verified successfully!');
+              window.location.href = "{{ url_for('signin') }}";
+            } else {
+              alert('Error: ' + result.message);
+            }
+          } catch (err) {
+            alert('Server error: ' + err.message);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

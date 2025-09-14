@@ -1,0 +1,322 @@
+.screens-get-started {
+  display: flex;
+  flex-direction: column;
+  width: 431px;
+  height: 917px;
+  align-items: center;
+  justify-content: center;
+  padding: 76px 16px;
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(203, 216, 200, 1) 0%,
+    rgba(248, 251, 247, 1) 100%
+  );
+  background-color: var(--premitives-color-background);
+}
+
+.screens-get-started .illustration {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 200.62px;
+}
+
+.screens-get-started .button {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tokens-spacing-spacing-sm);
+  padding: var(--premitives-spacing-4) var(--premitives-spacing-6)
+    var(--premitives-spacing-4) var(--premitives-spacing-6);
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  background-color: var(--premitives-color-primary);
+  border-radius: var(--premitives-radius-2xl);
+}
+
+.screens-get-started .text {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: var(--text-xl-medium-font-family);
+  font-weight: var(--text-xl-medium-font-weight);
+  color: var(--premitives-color-primary-foreground);
+  font-size: var(--text-xl-medium-font-size);
+  letter-spacing: var(--text-xl-medium-letter-spacing);
+  line-height: var(--text-xl-medium-line-height);
+  white-space: nowrap;
+  font-style: var(--text-xl-medium-font-style);
+}
+
+.screens-get-started .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--premitives-spacing-2);
+  padding: var(--premitives-spacing-16) 0px var(--premitives-spacing-8) 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+
+.screens-create {
+  display: flex;
+  flex-direction: column;
+  width: 431px;
+  height: 917px;
+  align-items: center;
+  gap: var(--size-space-600);
+  padding: var(--size-space-600);
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(203, 216, 200, 1) 0%,
+    rgba(248, 251, 247, 1) 100%
+  );
+  background-color: var(--premitives-color-background);
+}
+
+
+
+.screens-create .header {
+  display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--tokens-spacing-3-duplicate) var(--tokens-spacing-4)
+    var(--tokens-spacing-3-duplicate) var(--tokens-spacing-4);
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  background-color: transparent;
+}
+
+.screens-create .container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: -12px;
+  margin-bottom: -12px;
+}
+
+.screens-create .arrow-left {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1;
+}
+
+.screens-create .title {
+  position: relative;
+  width: fit-content;
+  margin-top: -11px;
+  margin-bottom: -9px;
+  font-family: var(--lead-font-family);
+  font-weight: var(--lead-font-weight);
+  color: var(--tokens-text-text-foreground);
+  font-size: var(--lead-font-size);
+  letter-spacing: var(--lead-letter-spacing);
+  line-height: var(--lead-line-height);
+  white-space: nowrap;
+  font-style: var(--lead-font-style);
+}
+
+.screens-create .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.screens-create .div-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-space-600);
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.screens-create .text-wrapper {
+  position: relative;
+  align-self: stretch;
+  margin-top: -1px;
+  font-family: var(--text-xl-medium-font-family);
+  font-weight: var(--text-xl-medium-font-weight);
+  color: var(--premitives-color-muted-foreground);
+  font-size: var(--text-xl-medium-font-size);
+  letter-spacing: var(--text-xl-medium-letter-spacing);
+  line-height: var(--text-xl-medium-line-height);
+  font-style: var(--text-xl-medium-font-style);
+}
+
+.screens-create .input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--premitives-spacing-1);
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.screens-create .label {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: var(--text-sm-regular-font-family);
+  font-weight: var(--text-sm-regular-font-weight);
+  color: #000000;
+  font-size: var(--text-sm-regular-font-size);
+  letter-spacing: var(--text-sm-regular-letter-spacing);
+  line-height: var(--text-sm-regular-line-height);
+  white-space: nowrap;
+  font-style: var(--text-sm-regular-font-style);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.screens-create .input-field {
+  display: flex;
+  align-items: center;
+  gap: var(--premitives-spacing-2);
+  padding: var(--premitives-spacing-2) var(--premitives-spacing-3)
+    var(--premitives-spacing-2) var(--premitives-spacing-3);
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  background-color: var(--premitives-color-input);
+  border-radius: var(--premitives-radius-lg);
+  border: 1px solid;
+  border-color: var(--premitives-color-border);
+}
+
+.screens-create .placeholder {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: var(--text-base-regular-font-family);
+  font-weight: var(--text-base-regular-font-weight);
+  color: var(--premitives-color-muted-foreground);
+  font-size: var(--text-base-regular-font-size);
+  letter-spacing: var(--text-base-regular-letter-spacing);
+  line-height: var(--text-base-regular-line-height);
+  white-space: nowrap;
+  font-style: var(--text-base-regular-font-style);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.screens-create .button {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tokens-spacing-spacing-sm);
+  padding: var(--premitives-spacing-3) var(--tokens-padding-padding-sm)
+    var(--premitives-spacing-3) var(--tokens-padding-padding-sm);
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  background-color: var(--premitives-color-primary);
+  border-radius: var(--premitives-radius-xl);
+}
+
+.screens-create .text {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: var(--text-base-medium-font-family);
+  font-weight: var(--text-base-medium-font-weight);
+  color: var(--premitives-color-primary-foreground);
+  font-size: var(--text-base-medium-font-size);
+  letter-spacing: var(--text-base-medium-letter-spacing);
+  line-height: var(--text-base-medium-line-height);
+  white-space: nowrap;
+  font-style: var(--text-base-medium-font-style);
+}
+
+.screens-create .icon {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.screens-create .arrow-right {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+/* Additional styles from other screen classes can be added here similarly */
+
+input:focus,
+input:active {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* Container for the 6 input boxes */
+.screens-get-started .otp-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between boxes */
+  margin-bottom: 24px; /* Space before the 'Continue' button */
+  width: 100%;
+}
+
+/* Styling for each individual OTP input box */
+.screens-get-started .otp-input {
+  width: 45px;
+  height: 50px;
+  font-size: 1.5rem; /* Makes the number inside bigger */
+  text-align: center;
+  font-weight: bold;
+  color: #3c4d44;
+  background-color: #ffffff; /* White background for the box */
+  border: 1px solid var(--tokens-border-border-input, #ccc); /* Uses your existing border color variable */
+  border-radius: var(--tokens-radius-rounded-md, 8px); /* Uses your existing border-radius variable */
+}
+
+/* Style for the box when the user is typing in it */
+.screens-get-started .otp-input:focus {
+  border-color: #3c4d44; /* Dark green border on focus */
+  box-shadow: 0 0 0 3px rgba(60, 77, 68, 0.2); /* Adds a soft glow */
+}
+
+/* These lines remove the small arrows that appear on number inputs in some browsers */
+.screens-get-started .otp-input {
+  -moz-appearance: textfield;
+}
+
+.screens-get-started .otp-input::-webkit-outer-spin-button,
+.screens-get-started .otp-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+

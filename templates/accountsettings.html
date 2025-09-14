@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='globals.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styleguide.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      /* Center the content */
+
+      .content-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+
+      .input {
+        position: relative;
+      }
+
+      .input label {
+        display: block;
+
+        font-weight: bold;
+      }
+
+      .input input {
+        width: 100%;
+        padding: 10px 40px 10px 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      /* Eye icon styling */
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 65%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        opacity: 0.6;
+      }
+
+      .toggle-password:hover {
+        opacity: 1;
+      }
+
+      .button {
+        width: 100%;
+        padding: 12px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screens-account">
+      <div class="header">
+        <div class="div" id="backBtn">
+          <div class="container">
+            <img
+              class="arrow-left"
+              src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="content-2">
+          <h2>Change Password</h2>
+
+          <div class="input">
+            <label for="oldPassword">Old Password</label>
+            <input
+              id="oldPassword"
+              type="password"
+              placeholder="Enter old password"
+              required
+            />
+            <img
+              src="{{ url_for('static', filename='../static/icons/eye.png') }}"
+              class="toggle-password"
+              data-target="oldPassword"
+            />
+          </div>
+
+          <div class="input">
+            <label for="newPassword">New Password</label>
+            <input
+              id="newPassword"
+              type="password"
+              placeholder="Enter new password"
+              required
+            />
+            <img
+              src="{{ url_for('static', filename='../static/icons/eye.png') }}"
+              class="toggle-password"
+              data-target="newPassword"
+            />
+          </div>
+
+          <div class="input">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              placeholder="Confirm new password"
+              required
+            />
+            <img
+              src="{{ url_for('static', filename='../static/icons/eye.png') }}"
+              class="toggle-password"
+              data-target="confirmPassword"
+            />
+          </div>
+
+          <button class="button">SEND OTP</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("backBtn").onclick = () => {
+        window.location.href = "{{ url_for('profile') }}";
+      };
+
+      document.querySelectorAll(".toggle-password").forEach((eye) => {
+        eye.addEventListener("click", () => {
+          const targetId = eye.getAttribute("data-target");
+          const input = document.getElementById(targetId);
+          if (input.type === "password") {
+            input.type = "text";
+            eye.src =
+              "{{ url_for('static', filename='../static/icons/eye-off.png') }}"; // use eye-off icon when visible
+          } else {
+            input.type = "password";
+            eye.src =
+              "{{ url_for('static', filename='../static/icons/eye.png') }}"; // use eye icon when hidden
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

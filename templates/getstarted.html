@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="screens-get-started">
+      <img class="illustration" src="{{ url_for('static', filename='../static/icons/Illustration.png') }}" />
+      <button class="button" id="btn"><div class="text">Get started</div></button>
+      <div class="container"></div>
+    </div>
+    <script>
+        const button=document.getElementById('btn');
+        button.onclick=()=>{
+            window.location.href="{{ url_for('create_account') }}"
+        }
+    </script>
+  </body>
+</html>

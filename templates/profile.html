@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="screens-profile">
+      <div class="header">
+        <div class="div">
+          <div class="div-2" id="backBtn">
+            <img class="arrow-left" src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}" />
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="div-2">
+          <div class="element-d-avatars">
+            <img src="{{ url_for('static', filename='../static/icons/17.png') }}" alt="" />
+          </div>
+        </div>
+        <div class="text-wrapper">Nithish</div>
+        <div class="text-wrapper-2">something@gmail.com</div>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- View Profile -->
+      <div class="view-space" id="viewProfileBtn">
+        <div class="div-2">
+          <img class="img" src="{{ url_for('static', filename='../static/icons/Generic avatar.png') }}" />
+          <div class="text-wrapper-3">View Profile</div>
+        </div>
+        <img class="img" src="{{ url_for('static', filename='../static/icons/chevron-right.png') }}" />
+      </div>
+
+      <!-- Account Settings -->
+      <div class="view-space" id="settingsBtn">
+        <div class="div-2">
+          <img class="img-2" src="{{ url_for('static', filename='../static/icons/Settings.png') }}" />
+          <div class="text-wrapper-4">Account Settings</div>
+        </div>
+        <img class="img" src="{{ url_for('static', filename='../static/icons/chevron-right.png') }}" />
+      </div>
+
+      <!-- Vehicles -->
+      <div class="view-space" id="vehiclesBtn">
+        <div class="div-2">
+          <img class="img-2" src="{{ url_for('static', filename='../static/icons/car-front.png') }}" />
+          <div class="text-wrapper-4">Vehicles</div>
+        </div>
+        <img class="img" src="{{ url_for('static', filename='../static/icons/chevron-right.png') }}" />
+      </div>
+
+      <!-- Log Out -->
+      <div class="profile-navigation" id="logoutBtn">
+        <div class="div-2">
+          <img class="img-2" src="{{ url_for('static', filename='../static/icons/door-open.png') }}" />
+          <div class="text-wrapper-4">Log Out</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("backBtn").onclick = () => {
+    if (document.referrer) {
+      window.location.href = document.referrer;
+    } else {
+      window.history.back();
+    }
+  };
+      // ✅ Add navigation handlers (matching existing IDs)
+      document.getElementById("backBtn").onclick = () =>
+        (window.location.href = "{{ url_for('dashboard') }}");
+
+      document.getElementById("viewProfileBtn").onclick = () =>
+        (window.location.href = "{{ url_for('profile_edit') }}");
+
+      document.getElementById("settingsBtn").onclick = () =>
+        (window.location.href = "{{ url_for('account_settings') }}");
+
+      document.getElementById("vehiclesBtn").onclick = () =>
+        (window.location.href = "{{ url_for('vehicles') }}");
+
+      document.getElementById("logoutBtn").onclick = () => {
+        localStorage.clear(); // clear session if needed
+        window.location.href = "{{ url_for('signin') }}";
+      };
+    </script>
+  </body>
+</html>

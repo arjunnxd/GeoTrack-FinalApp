@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="screens-vehicles">
+      <header class="header">
+        <div class="container" id="backBtn"><img class="arrow-left" src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}" /></div>
+        <div class="title">Alerts</div>
+        <div class="container"></div>
+      </header>
+      <div class="content">
+        <div class="div-wrapper"><p class="text-wrapper">View all the alerts !</p></div>
+        <div class="selectable-card">
+          <div class="wrapper">
+            <div class="icon-wrapper"><img class="triangle-alert" src="{{ url_for('static', filename='../static/icons/triangle-alert.svg') }}" /></div>
+            <div class="div">
+              <p class="p">Car is coming very close you. Be carful</p>
+              <div class="description">AP00B0001</div>
+            </div>
+          </div>
+        </div>
+        <div class="selectable-card-2">
+          <div class="wrapper">
+            <div class="icon-wrapper"><img class="triangle-alert" src="{{ url_for('static', filename='../static/icons/triangle-alert.svg') }}" /></div>
+            <div class="div">
+              <p class="p">Truck is speeding very fast beside you</p>
+              <div class="description">AP00B2645</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.getElementById("backBtn").onclick = () =>
+        (window.location.href = "{{ url_for('profile') }}");
+  </script>
+</html>

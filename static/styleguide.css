@@ -1,0 +1,876 @@
+:root {
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-16: 64px;
+  --premitives-spacing-8: 32px;
+  --premitives-spacing-6: 24px;
+  --premitives-spacing-4: 16px;
+  --premitives-radius-2xl: 24px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --tokens-spacing-spacing-sm: 8px;
+}
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-0: 0px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-radius-xl: 16px;
+  --premitives-spacing-1: 4px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3-duplicate: 12px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+}
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-800: 32px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-radius-xl: 16px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --premitives-spacing-1: 4px;
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-radius-rounded-full: 9999px;
+  --tokens-background-bg-primary-20: var(--primitives-color-primary-20);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3-duplicate: 12px;
+  --tokens-spacing-2-duplicate: 8px;
+  --tokens-spacing-8: 32px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --primitives-color-primary-20: rgba(5, 150, 105, 0.2);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --primitives-color-primary-20: rgba(5, 150, 105, 0.2);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+  --primitives-color-primary-20: rgba(250, 250, 250, 0.2);
+}
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-800: 32px;
+  --size-space-150: 6px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-radius-xl: 16px;
+  --premitives-spacing-1: 4px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-radius-rounded-full: 9999px;
+  --tokens-background-bg-primary-20: var(--primitives-color-primary-20);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3-duplicate: 12px;
+  --tokens-spacing-2-duplicate: 8px;
+  --tokens-spacing-8: 32px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --primitives-color-primary-20: rgba(5, 150, 105, 0.2);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --primitives-color-primary-20: rgba(5, 150, 105, 0.2);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+  --primitives-color-primary-20: rgba(250, 250, 250, 0.2);
+}
+
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --muted-font-family: "Urbanist", Helvetica;
+  --muted-font-weight: 400;
+  --muted-font-size: 14px;
+  --muted-letter-spacing: 0px;
+  --muted-line-height: 20px;
+  --muted-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-800: 32px;
+  --size-space-200: 8px;
+  --size-space-150: 6px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-3-duplicate: 12px;
+  --premitives-radius-xl: 16px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-text-text-muted-foreground: var(
+    --primitives-color-muted-foreground-100
+  );
+  --tokens-radius-rounded-full: 9999px;
+  --tokens-background-bg-primary-20: var(--primitives-color-primary-20);
+  --tokens-radius-rounded-md: 6px;
+  --tokens-background-bg-background: var(--primitives-color-background-100);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3: 12px;
+  --tokens-border-border-input: var(--primitives-color-input-100);
+  --tokens-spacing-2: 8px;
+  --tokens-spacing-8: 32px;
+  --tokens-spacing-6: 24px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --primitives-color-muted-foreground-100: rgba(67, 93, 83, 1);
+  --primitives-color-primary-20: rgba(5, 150, 105, 0.2);
+  --primitives-color-background-100: rgba(251, 254, 253, 1);
+  --primitives-color-input-100: rgba(218, 231, 226, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --primitives-color-muted-foreground-100: rgba(67, 93, 83, 1);
+  --primitives-color-primary-20: rgba(5, 150, 105, 0.2);
+  --primitives-color-background-100: rgba(251, 254, 253, 1);
+  --primitives-color-input-100: rgba(218, 231, 226, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+  --primitives-color-muted-foreground-100: rgba(161, 161, 170, 1);
+  --primitives-color-primary-20: rgba(250, 250, 250, 0.2);
+  --primitives-color-background-100: rgba(9, 9, 11, 1);
+  --primitives-color-input-100: rgba(39, 39, 42, 1);
+}
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-0: 0px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-radius-xl: 16px;
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --premitives-spacing-1: 4px;
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3-duplicate: 12px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:root {
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-sm-medium-font-family: "Source Sans 3", Helvetica;
+  --text-sm-medium-font-weight: 500;
+  --text-sm-medium-font-size: 14px;
+  --text-sm-medium-letter-spacing: 0px;
+  --text-sm-medium-line-height: 20px;
+  --text-sm-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-0: 0px;
+  --size-space-200: 8px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-foreground: rgba(31, 43, 27, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-spacing-1: 4px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-color-secondary: rgba(222, 229, 221, 1);
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-spacing-4: 16px;
+  --premitives-spacing-0: 0px;
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-xxs: 8px;
+}
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-lg-regular-font-family: "Source Sans 3", Helvetica;
+  --text-lg-regular-font-weight: 400;
+  --text-lg-regular-font-size: 18px;
+  --text-lg-regular-letter-spacing: 0px;
+  --text-lg-regular-line-height: 20px;
+  --text-lg-regular-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-200: 8px;
+  --size-space-0: 0px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-foreground: rgba(31, 43, 27, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-radius-md: 6px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-secondary: rgba(222, 229, 221, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-xxs: 8px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+}
+
+
+
+
+
+
+:root {
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-xl-semibold-font-family: "Inter", Helvetica;
+  --text-xl-semibold-font-weight: 600;
+  --text-xl-semibold-font-size: 20px;
+  --text-xl-semibold-letter-spacing: 0px;
+  --text-xl-semibold-line-height: 28px;
+  --text-xl-semibold-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --shadow-lg: 0px 10px 15px 0px rgba(0, 0, 0, 0.1);
+  --size-space-600: 24px;
+  --size-space-300: 12px;
+  --size-space-0: 0px;
+  --size-space-150: 6px;
+  --size-space-200: 8px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-popover-foreground: rgba(43, 58, 42, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-radius-lg: 12px;
+  --premitives-spacing-4: 16px;
+  --premitives-color-secondary: rgba(222, 229, 221, 1);
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --premitives-spacing-5: 20px;
+  --premitives-radius-2xl: 24px;
+  --premitives-color-popover: rgba(244, 248, 243, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-xxs: 8px;
+  --shape-corner-large-increased: 20px;
+}
+
+
+
+
+:root {
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-xl-semibold-font-family: "Inter", Helvetica;
+  --text-xl-semibold-font-weight: 600;
+  --text-xl-semibold-font-size: 20px;
+  --text-xl-semibold-letter-spacing: 0px;
+  --text-xl-semibold-line-height: 28px;
+  --text-xl-semibold-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --shadow-lg: 0px 10px 15px 0px rgba(0, 0, 0, 0.1);
+  --size-space-600: 24px;
+  --size-space-300: 12px;
+  --size-space-0: 0px;
+  --size-space-150: 6px;
+  --size-space-400: 16px;
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-popover-foreground: rgba(43, 58, 42, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-radius-lg: 12px;
+  --premitives-spacing-4: 16px;
+  --premitives-color-secondary: rgba(222, 229, 221, 1);
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --premitives-spacing-5: 20px;
+  --premitives-radius-2xl: 24px;
+  --premitives-color-popover: rgba(244, 248, 243, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-xxs: 8px;
+  --shape-corner-large-increased: 20px;
+}
+
+
+
+
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-base-semibold-font-family: "Source Sans 3", Helvetica;
+  --text-base-semibold-font-weight: 600;
+  --text-base-semibold-font-size: 16px;
+  --text-base-semibold-letter-spacing: 0px;
+  --text-base-semibold-line-height: 24px;
+  --text-base-semibold-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-0: 0px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-accent-foreground: rgba(46, 59, 44, 1);
+  --premitives-color-foreground: rgba(31, 43, 27, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-0: 0px;
+  --premitives-spacing-3-duplicate: 12px;
+  --premitives-spacing-4-duplicate: 16px;
+  --premitives-radius-xl: 16px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --premitives-color-ring: rgba(63, 74, 60, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3: 12px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+}
+
+
+
+
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-150: 6px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-radius-xl: 16px;
+  --premitives-spacing-1: 4px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3-duplicate: 12px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+s
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+:root {
+  --lead-font-family: "Urbanist", Helvetica;
+  --lead-font-weight: 400;
+  --lead-font-size: 20px;
+  --lead-letter-spacing: 0px;
+  --lead-line-height: 28px;
+  --lead-font-style: normal;
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-base-semibold-font-family: "Source Sans 3", Helvetica;
+  --text-base-semibold-font-weight: 600;
+  --text-base-semibold-font-size: 16px;
+  --text-base-semibold-letter-spacing: 0px;
+  --text-base-semibold-line-height: 24px;
+  --text-base-semibold-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-0: 0px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-foreground: rgba(31, 43, 27, 1);
+  --premitives-spacing-0: 0px;
+  --premitives-spacing-3-duplicate: 12px;
+  --premitives-spacing-4-duplicate: 16px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --tokens-text-text-foreground: var(--primitives-color-foreground-100);
+  --tokens-spacing-4: 16px;
+  --tokens-spacing-3: 12px;
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+/*
+
+To enable a theme in your HTML, simply add one of the following data attributes to an HTML element, like so:
+
+<body data-primitives-mode="light">
+    <!-- the rest of your content -->
+</body>
+
+You can apply the theme on any DOM node, not just the `body`
+
+*/
+
+[data-primitives-mode="light"] {
+  --primitives-color-foreground-100: rgba(7, 29, 20, 1);
+}
+
+[data-primitives-mode="dark"] {
+  --primitives-color-foreground-100: rgba(250, 250, 250, 1);
+}
+
+
+
+
+
+:root {
+  --text-xl-medium-font-family: "Source Sans 3", Helvetica;
+  --text-xl-medium-font-weight: 500;
+  --text-xl-medium-font-size: 20px;
+  --text-xl-medium-letter-spacing: 0px;
+  --text-xl-medium-line-height: 28px;
+  --text-xl-medium-font-style: normal;
+  --text-sm-regular-font-family: "Source Sans 3", Helvetica;
+  --text-sm-regular-font-weight: 400;
+  --text-sm-regular-font-size: 14px;
+  --text-sm-regular-letter-spacing: 0px;
+  --text-sm-regular-line-height: 20px;
+  --text-sm-regular-font-style: normal;
+  --text-base-regular-font-family: "Source Sans 3", Helvetica;
+  --text-base-regular-font-weight: 400;
+  --text-base-regular-font-size: 16px;
+  --text-base-regular-letter-spacing: 0px;
+  --text-base-regular-line-height: 24px;
+  --text-base-regular-font-style: normal;
+  --text-base-medium-font-family: "Source Sans 3", Helvetica;
+  --text-base-medium-font-weight: 500;
+  --text-base-medium-font-size: 16px;
+  --text-base-medium-letter-spacing: 0px;
+  --text-base-medium-line-height: 24px;
+  --text-base-medium-font-style: normal;
+  --size-space-600: 24px;
+  --size-space-0: 0px;
+  --size-space-200: 8px;
+  --size-space-150: 6px;
+  --premitives-color-background: rgba(248, 251, 247, 1);
+  --premitives-color-accent: rgba(203, 216, 200, 1);
+  --premitives-color-muted-foreground: rgba(117, 127, 114, 1);
+  --premitives-color-primary-foreground: rgba(240, 255, 236, 1);
+  --premitives-spacing-2: 8px;
+  --premitives-spacing-3: 12px;
+  --premitives-radius-lg: 12px;
+  --premitives-color-input: rgba(250, 250, 250, 1);
+  --premitives-color-border: rgba(211, 217, 209, 1);
+  --premitives-radius-xl: 16px;
+  --premitives-spacing-1: 4px;
+  --premitives-color-primary: rgba(63, 74, 60, 1);
+  --tokens-spacing-spacing-sm: 8px;
+  --tokens-padding-padding-sm: 16px;
+}

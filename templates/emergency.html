@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOS Emergency</title>
+  <style>
+    body {
+      background-color: #CBD8C8;
+      
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    } 
+
+    h1{
+      color: #3f4a3c;
+    }
+
+    .hidden {
+      display: none;
+    }
+    #timer {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .button {
+      background: white;
+      color: #f44336;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .dashboard {
+      margin-top: 30px;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .comm-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .comm-item {
+      background: #f1f1f1;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .comm-item h4 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .comm-item p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Glow effect */
+    .active {
+      background: white; /* green background */
+      color: black;
+      box-shadow: 0 1px 5px rgb(53, 53, 53);
+      animation: glow 1.5s infinite alternate;
+    }
+
+    
+  </style>
+</head>
+<body>
+  <h1>🚨 SOS Activated</h1>
+  <p>Cancel within <strong>5 seconds</strong> to stop emergency alerts.</p>
+  <div id="timer">5</div>
+  <button id="cancelBtn" class="button">Cancel SOS</button>
+
+  <!-- Hidden emergency response UI -->
+  <div id="emergencyUI" class="hidden">
+    <div class="dashboard">
+      <div class="panel communications">
+        <h3>📱 Emergency Communication Network</h3>
+        <div class="comm-grid">
+          <div class="comm-item" id="hospital">
+            <h4>🏥 Hospital</h4>
+            <p>Standby</p>
+          </div>
+          <div class="comm-item" id="family">
+            <h4>👨‍👩‍👧‍👦 Family</h4>
+            <p>Online</p>
+          </div>
+          <div class="comm-item" id="friends">
+            <h4>👥 Emergency Contacts</h4>
+            <p>Available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <div class="panel emergency-panel">
+        <h3>🚨 EMERGENCY RESPONSE ACTIVATED</h3>
+        <div style="margin-top: 15px; text-align: left;">
+          <h4>Automatic Actions Taken:</h4>
+          <ul id="emergencyActions">
+            <li>📡 Location shared with Hospital</li>
+            <li>📞 Emergency contacts notified</li>
+            <li>🚑 Ambulance requested</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  let timeLeft = 5;
+  const timerEl = document.getElementById("timer");
+  const cancelBtn = document.getElementById("cancelBtn");
+  const emergencyUI = document.getElementById("emergencyUI");
+  let countdown;
+  let cancelled = false;
+
+  // Assume userId is stored in localStorage after login
+  const userId = localStorage.getItem("userId");
+
+  countdown = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+
+      if (!cancelled) {
+        document.getElementById("cancelBtn").style.display = "none";
+        emergencyUI.classList.remove("hidden");
+
+        // Call backend to make emergency call
+        fetch("{{ url_for('make_emergency_call') }}", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId })
+        })
+        .then(res => res.json())
+        .then(data => console.log("📞 Emergency call triggered:", data))
+        .catch(err => console.error("Call error:", err));
+      }
+    }
+  }, 1000);
+
+  cancelBtn.addEventListener("click", () => {
+    clearInterval(countdown);
+    cancelled = true;
+    alert("✅ SOS Cancelled");
+    timerEl.textContent = "Cancelled";
+    window.location.href="{{ url_for('dashboard_main') }}"
+  });
+</script>
+
+</body>
+</html>

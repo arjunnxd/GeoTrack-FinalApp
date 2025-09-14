@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='globals.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styleguide.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      /* --- MODIFIED CSS FOR LARGER CARDS --- */
+      .selectable-card,
+      .selectable-card-2 {
+        background: #fff;
+        border-radius: 10px;
+        margin: 15px auto; /* Increased margin slightly */
+        padding: 20px; /* Increased padding */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 600px; /* Increased max-width */
+        display: flex;
+        align-items: center;
+      }
+
+      .wrapper {
+
+        width: 200px;
+        display: flex;
+        align-items: center;
+        gap: 16px; /* Increased gap slightly */
+      }
+
+      .icon-wrapper {
+          /* Increased icon container size */
+        height: 50px; /* Increased icon container size */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* --- END MODIFIED CSS --- */
+
+      .div {
+        flex: 1;
+      }
+
+      /* --- MODIFIED CSS FOR LARGER TEXT --- */
+      .vehicle-info p {
+        margin: 0;
+        padding: 2px 0;
+        font-size: 16px; /* Increased font size */
+        color: #333;
+      }
+
+      .vehicle-info .number {
+        font-weight: bold;
+        font-size: 18px; /* Increased font size */
+      }
+      /* --- END MODIFIED CSS --- */
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background: #007bff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 16px;
+      }
+
+      .button img {
+        width: 16px;
+        height: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screens-vehicles">
+      <header class="header">
+        <div class="container" id="backBtn">
+          <img
+            class="arrow-left"
+            src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}"
+          />
+        </div>
+        <div class="title">Vehicles</div>
+        <div class="container"></div>
+      </header>
+
+      <div class="content">
+        <div class="continue-sign-in-by-wrapper">
+          <p class="continue-sign-in-by" style="text-align: center">
+            Add your vehicles
+          </p>
+        </div>
+        <div id="vehicleList"></div>
+
+        <a href="{{ url_for('add_vehicles') }}">
+          <button class="button">
+            <div class="icon">
+              <img
+                class="plus"
+                src="{{ url_for('static', filename='../static/icons/plus.png') }}"
+              />
+            </div>
+            <div class="text">Add Vehicle</div>
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("backBtn").onclick = () => {
+        window.location.href = "{{ url_for('profile') }}";
+      };
+
+      async function loadVehicles() {
+        const userId = localStorage.getItem("userId");
+        if (!userId) return;
+
+        try {
+          const res = await fetch("{{ url_for('get_vehicles') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          });
+
+          const data = await res.json();
+
+          if (data.success && Array.isArray(data.vehicles)) {
+            const container = document.getElementById("vehicleList");
+            container.innerHTML = "";
+
+            data.vehicles.forEach((v) => {
+              const type = v.vehicleType || v.type || "Unknown";
+              const number = v.vehicleNumber || v.number || "N/A";
+
+              const card = document.createElement("div");
+              card.className = "selectable-card";
+
+              card.innerHTML = `
+                <div class="wrapper">
+                  <div class="icon-wrapper">
+                    <img class="img" src="{{ url_for('static', filename='../static/icons/car-front.png') }}" />
+                  </div>
+                  <div class="div vehicle-info">
+                    <p>${type}</p>
+                    <p class="number">${number}</p>
+                  </div>
+                </div>
+              `;
+              container.appendChild(card);
+            });
+          }
+        } catch (err) {
+          console.error("Error loading vehicles:", err);
+        }
+      }
+    
+      document.addEventListener("DOMContentLoaded", loadVehicles);
+    </script>
+  </body>
+</html>

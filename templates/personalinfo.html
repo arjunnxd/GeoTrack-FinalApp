@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='globals.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styleguide.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="screens-personal">
+      <div class="header">
+        <a href="{{ url_for('create_account') }}">
+          <div class="container">
+            <img
+              class="arrow-left"
+              src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}"
+            /></div
+        ></a>
+        <div class="div">
+          <div class="title">Personal Information</div>
+        </div>
+        <div class="content"><div class="text-wrapper">1/3</div></div>
+      </div>
+      <div class="progress-indicator">
+        <div class="bar-2"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <div class="content-2">
+        <div class="input">
+          <label class="label" for="fullname">Full Name</label>
+          <input
+            id="fullname"
+            name="fullname"
+            type="text"
+            placeholder="Enter your name"
+            class="input-field"
+            required
+          />
+        </div>
+
+        <div class="input">
+          <label class="label" for="dob">DOB</label>
+          <div class="input-field" style="display: flex; align-items: center">
+            <input
+              id="dob"
+              name="dob"
+              type="date"
+              placeholder="Select the date of birth"
+              class="date-input"
+              required
+              style="
+                border: none;
+                outline: none;
+                flex-grow: 1;
+                padding-left: 8px;
+                background-color: transparent;
+                box-shadow: none;
+              "
+            />
+          </div>
+        </div>
+        <div class="input">
+          <label class="label" for="phone">Phone Number</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="Enter 10-digit number"
+            class="input-field"
+            pattern="^\+\d{1,3}\s?\d{7,15}$"
+            maxlength="13"
+            inputmode="tel"
+            required
+          />
+        </div>
+      </div>
+      <div class="frame">
+        <!-- Next Button -->
+        <a
+          href="#"
+          class="button"
+          id="nextBtn"
+          onclick="savePersonalInfo(event)"
+        >
+          <div class="text">Next</div>
+          <div class="img-wrapper">
+            <img
+              class="img"
+              src="{{ url_for('static', filename='../static/icons/arrow-right (2).png') }}"
+              alt="Next"
+            />
+          </div>
+        </a>
+      </div>
+    </div>
+    <script>
+      const fullNameInput = document.getElementById("fullname");
+      const phoneInput = document.getElementById("phone");
+      const dobInput = document.getElementById("dob");
+      const nextBtn = document.getElementById("nextBtn");
+
+      let isSubmitting = false; // prevents double submit
+
+      // --- Input helpers ---
+      // Allow only letters and spaces for full name
+      fullNameInput.addEventListener("input", () => {
+        fullNameInput.value = fullNameInput.value.replace(/[^a-zA-Z\s]/g, "");
+      });
+
+      // Allow only digits for phone, max 10 digits
+      phoneInput.addEventListener("input", () => {
+        phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+      });
+
+      // --- Click handler for Next button ---
+      nextBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (isSubmitting) return;
+
+        const name = fullNameInput.value.trim();
+        const dob = dobInput.value;
+        const phoneDigits = phoneInput.value.replace(/\D/g, "");
+
+        const nameRegex = /^[A-Za-z\s]{2,}$/;
+
+        if (!nameRegex.test(name)) {
+          alert(
+            "Please enter a valid full name (letters and spaces, min 2 chars)."
+          );
+          return;
+        }
+
+        if (!dob) {
+          alert("Please select DOB.");
+          return;
+        }
+
+        if (phoneDigits.length !== 10) {
+          alert("Please enter a valid 10-digit phone number.");
+          return;
+        }
+
+        // All client validations passed — save
+        savePersonalInfo(); // safe to call (function below handles the rest)
+      });
+
+      // --- Save function (sends data to server, prefixes +91) ---
+      async function savePersonalInfo(event) {
+        if (event && typeof event.preventDefault === "function")
+          event.preventDefault();
+        if (isSubmitting) return;
+        isSubmitting = true;
+
+        try {
+          const fullname = fullNameInput.value.trim();
+          const dob = dobInput.value;
+          const rawDigits = phoneInput.value.replace(/\D/g, ""); // cleaned digits
+
+          // Normalize phone to E.164-ish +91 format
+          let phone;
+          if (rawDigits.length === 10) {
+            phone = "+91" + rawDigits;
+          } else if (rawDigits.length === 12 && rawDigits.startsWith("91")) {
+            phone = "+" + rawDigits; // user typed 91xxxxxxxxxx
+          } else if (rawDigits.length === 11 && rawDigits.startsWith("0")) {
+            phone = "+91" + rawDigits.slice(1); // 0XXXXXXXXXX -> +91XXXXXXXXXX
+          } else {
+            alert(
+              "Invalid phone format. Please enter a 10-digit mobile number."
+            );
+            isSubmitting = false;
+            return;
+          }
+
+          const Id = localStorage.getItem("userId");
+          if (!Id) {
+            alert("No account Id found. Please sign up again.");
+            window.location.href = "{{ url_for('create_account') }}";
+            return;
+          }
+
+          const response = await fetch("{{ url_for('save_personalinfo') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: Id, fullname, dob, phone }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            localStorage.setItem("phone", phone);
+            window.location.href = "{{ url_for('vehicle_info') }}";
+          } else {
+            alert(result.message || "Failed to save personal info.");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Network error. Please try again.");
+        } finally {
+          isSubmitting = false;
+        }
+      }
+    </script>
+  </body>
+</html>

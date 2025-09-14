@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='globals.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styleguide.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      :root {
+        --sidebar-width: 320px;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Layout: map fills page, sidebar on right */
+      #app {
+        display: flex;
+        height: 100vh;
+        width: 100%;
+        position: relative;
+      }
+
+      #map {
+        flex: 1 1 auto;
+        height: 100%;
+      }
+
+      /* Right sidebar */
+      #sidebar {
+        width: var(--sidebar-width);
+        max-width: 40%;
+        background: #f6f6f6;
+        border-left: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 12px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 4px;
+      }
+
+      .sidebar-title {
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      .vehicle-card {
+        background: white;
+        padding: 12px;
+        margin: 12px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .vehicle-card .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .vehicle-card b {
+        font-size: 15px;
+      }
+      .meta {
+        color: #666;
+        font-size: 13px;
+      }
+
+      .content {
+        display: flex;
+        justify-content: space-between;
+        align-self: stretch;
+        width: 100%;
+        align-items: center;
+        position: relative;
+        flex: 0 0 auto;
+      }
+
+      .chevron-right {
+        position: relative;
+        width: 18px;
+        height: 18px;
+        aspect-ratio: 1;
+      }
+
+      .separator {
+        position: relative !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        height: 1px !important;
+        background-color: var(--premitives-color-border) !important;
+      }
+      .text-wrapper-2 {
+        position: relative;
+        width: fit-content;
+        margin-top: -1px;
+        font-family: var(--text-xl-semibold-font-family);
+        font-weight: var(--text-xl-semibold-font-weight);
+        color: var(--premitives-color-popover-foreground);
+        font-size: var(--text-xl-semibold-font-size);
+        letter-spacing: var(--text-xl-semibold-letter-spacing);
+        line-height: var(--text-xl-semibold-line-height);
+        white-space: nowrap;
+        font-style: var(--text-xl-semibold-font-style);
+      }
+
+      .text-wrapper-3 {
+        position: relative;
+        width: fit-content;
+        font-family: var(--text-base-regular-font-family);
+        font-weight: var(--text-base-regular-font-weight);
+        color: var(--premitives-color-muted-foreground);
+        font-size: var(--text-base-regular-font-size);
+        letter-spacing: var(--text-base-regular-letter-spacing);
+        line-height: var(--text-base-regular-line-height);
+        white-space: nowrap;
+        font-style: var(--text-base-regular-font-style);
+      }
+      .text-wrapper-4 {
+        position: relative;
+        width: fit-content;
+        margin-top: -1px;
+        font-family: var(--text-xl-medium-font-family);
+        font-weight: var(--text-xl-medium-font-weight);
+        color: var(--premitives-color-muted-foreground);
+        font-size: var(--text-xl-medium-font-size);
+        letter-spacing: var(--text-xl-medium-letter-spacing);
+        line-height: var(--text-xl-medium-line-height);
+        white-space: nowrap;
+        font-style: var(--text-xl-medium-font-style);
+      }
+
+      .container-2 {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        position: relative;
+        flex: 1;
+        flex-grow: 1;
+        margin-top: 8px;
+      }
+      /* Dialog overlay style on map (keeps your existing dialog) */
+      .dialog {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        z-index: 1000;
+      }
+
+      /* Stop button (center bottom) */
+      .stop-btn {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .circle-btn {
+        width: 50px;
+        height: 50px;
+        background-color: #4a5240;
+        border-radius: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .circle-btn .icon {
+        width: 20px;
+        height: 20px;
+        filter: invert(1);
+      }
+
+      /* Marker toggle button (bottom-right) */
+      .marker-toggle {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        z-index: 2000;
+      }
+      .marker-toggle button {
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+      }
+
+      /* ✅ Responsive Breakpoints */
+
+      /* Tablet: sidebar overlays instead of shrinking map */
+      /* Tablet / Mobile: Sidebar slides in/out */
+      @media (max-width: 1024px) {
+        #sidebar {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          width: var(--sidebar-width);
+          max-width: 90%;
+          background: #f6f6f6;
+          border-left: 1px solid rgba(0, 0, 0, 0.06);
+          padding: 12px;
+          box-sizing: border-box;
+          overflow-y: auto;
+          transform: translateX(100%);
+          transition: transform 0.3s ease-in-out;
+          z-index: 3000;
+        }
+
+        #sidebar.active {
+          transform: translateX(0);
+        }
+
+        #sidebar-toggle {
+          position: absolute;
+          top: 10px;
+          right: 16px;
+          z-index: 3100;
+          background: #fff;
+          padding: 8px 12px;
+          border-radius: 6px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+          cursor: pointer;
+        }
+      }
+
+      /* Mobile: stack everything */
+      @media (max-width: 600px) {
+        .dialog {
+          bottom: 10%;
+          width: 95%;
+          font-size: 14px;
+        }
+
+        .circle-btn {
+          width: 45px;
+          height: 45px;
+        }
+
+        .stop-btn {
+          bottom: 25%;
+        }
+
+        .marker-toggle button {
+          padding: 8px;
+          font-size: 13px;
+        }
+        .marker-toggle {
+          bottom: 4%;
+          right: 25%;
+        }
+        #notification-container {
+          left: 5%;
+          margin-top: 10%;
+        }
+        /* SOS button (above stop button) */
+        .sos-btn {
+          position: absolute;
+          top: 6%; /* place above stop button */
+          left: 22%;
+          transform: translateX(-50%);
+          z-index: 2000;
+          text-align: center;
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          border-radius: 100%;
+        }
+
+        #sos-popup {
+          display: none;
+          position: fixed;
+          top: 10%;
+          left: 28%;
+          transform: translate(-50%, -50%);
+          background: white;
+          border-radius: 12px;
+          padding: 20px;
+          text-align: center;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+          z-index: 6000;
+        }
+
+        #sos-popup h2 {
+          color: red;
+          margin-bottom: 10px;
+        }
+
+        #sos-popup p {
+          margin-bottom: 20px;
+          color: #333;
+        }
+      }
+
+      .selectable-card,
+      .selectable-card-2 {
+        background: #fff3cd;
+        border: 1px solid #ffeeba;
+        border-radius: 10px;
+        padding: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        animation: fadeIn 0.6s ease-in-out;
+      }
+
+      .selectable-card .wrapper,
+      .selectable-card-2 .wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .selectable-card p,
+      .selectable-card-2 p {
+        margin: 0;
+        font-weight: bold;
+        color: #856404;
+      }
+
+      .description {
+        font-size: 13px;
+        color: #6c757d;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .selectable-card {
+        margin-bottom: 15px;
+      }
+      #notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 320px;
+        z-index: 4500;
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+      }
+      /* SOS Popup */
+      .sos-btn {
+        position: absolute;
+        top: 9%; /* place above stop button */
+        left: 5.7%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 100%;
+      }
+
+      #sos-popup {
+        display: none;
+        position: fixed;
+        top: 10%;
+        left: 28%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        z-index: 6000;
+      }
+
+      #sos-popup h2 {
+        color: red;
+        margin-bottom: 10px;
+      }
+
+      #sos-popup p {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      /* Yellow alert (warning) */
+      .alert-warning {
+        background: #fff3cd;
+        border: 1px solid #ffeeba;
+      }
+      .alert-warning p {
+        color: #856404;
+      }
+
+      /* Red alert (danger) */
+      .alert-danger {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+      }
+      .alert-danger p {
+        color: #721c24;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div id="map"></div>
+
+      <!-- Right sidebar (nearby list) -->
+      <div id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">Nearby Vehicles</div>
+          <div id="nearby-count" class="meta">0</div>
+        </div>
+        <div id="nearby-list"></div>
+      </div>
+    </div>
+
+    <!-- Dialog (your existing info card on map) -->
+    <div class="dialog">
+      <div class="content">
+        <div class="content-2">
+          <div id="owner-name" class="text-wrapper-2">Nithish</div>
+          <div id="location-name" class="text-wrapper-3">Vijayawada</div>
+        </div>
+        <img
+          class="chevron-right"
+          src="{{ url_for('static', filename='../static/icons/chevron-right.png') }}"
+        />
+      </div>
+      <div class="separator"></div>
+      <div class="dialog-footer">
+        <div class="container-2">
+          <div class="text-wrapper-4" id="vehicle-number">AP00B0001</div>
+          <div id="speed-display" class="text-wrapper-4">0 km/h</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stop button -->
+    <a href="javascript:void(0)" id="stop-btn" class="stop-btn">
+      <div class="circle-btn">
+        <img
+          src="{{ url_for('static', filename='../static/icons/x.png') }}"
+          alt="Stop"
+          class="icon"
+        />
+      </div>
+      <div class="btn-label" id="stop-timer">00:00:00</div>
+    </a>
+
+    <!-- Marker toggle -->
+    <div class="marker-toggle">
+      <button id="toggle-markers">Show markers</button>
+      <button id="toggle-popups">Show popups</button>
+    </div>
+
+    <!-- 🔔 Notification Container (floating alerts) -->
+    <div id="notification-container"></div>
+
+    <!-- 🚨 Alerts Sidebar -->
+    <div
+      id="alert-sidebar"
+      style="
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 280px;
+        height: calc(100% - 60px);
+        background: #fff;
+        border-right: 1px solid #ddd;
+        box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        display: none;
+        z-index: 4000;
+        overflow-y: auto;
+      "
+    >
+      <h3 style="margin-bottom: 10px">🚨 Alert History</h3>
+      <div id="alert-history"></div>
+    </div>
+
+    <!-- Toggle Alerts Button -->
+    <button
+      onclick="toggleSidebar()"
+      style="
+        position: fixed;
+        top: 15px;
+        left: 60px;
+        z-index: 5000;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        background: #dc3545;
+        color: #fff;
+        cursor: pointer;
+      "
+    >
+      Alerts
+    </button>
+
+    <!-- 🔉 Alert Sound -->
+    <audio
+      id="alert-sound-1"
+      src="{{ url_for('static', filename='../static/icons/bell.mp3') }}"
+      preload="auto"
+      muted
+      autoplay
+    ></audio>
+    <!-- <audio id="alert-sound-1" src="./icons/bell.mp3" preload="auto" muted autoplay></audio> -->
+    <audio
+      id="alert-sound-2"
+      src="{{ url_for('static', filename='../static/icons/bell.mp3') }}"
+      preload="auto"
+      muted
+      autoplay
+    ></audio>
+
+    <!-- 🚨 SOS Button -->
+    <a href="javascript:void(0)" id="sos-btn" class="sos-btn">
+      <img
+        src="{{ url_for('static', filename='../static/icons/sos.png') }}"
+        alt=""
+        srcset=""
+        style="height: 50px; width: 50px"
+      />
+      <!-- <div class="btn-label">SOS</div> -->
+    </a>
+
+    <!-- 🚨 SOS Popup -->
+    <div id="sos-popup">
+      <h2>🚨 Emergency Alert!</h2>
+      <p>Redirecting to emergency services...</p>
+    </div>
+
+    <script>
+  function toggleSidebar() {
+  const sidebar = document.getElementById("alert-sidebar");
+  if (!sidebar) return;
+
+  if (sidebar.style.display === "block") {
+    sidebar.style.display = "none";  // hide
+  } else {
+    sidebar.style.display = "block"; // show
+  }
+}
+  // Function to show alert
+// Function to show alert
+function showAlert(message, vehicle, index) {
+  const container = document.getElementById("notification-container");
+  if (!container) return;
+  container.style.display = "flex";
+
+  const alertBox = document.createElement("div");
+  alertBox.className = "selectable-card"; 
+
+  // ✅ Apply different color depending on index
+  if (index === 0) {
+    alertBox.classList.add("alert-warning"); // yellow
+  } else if (index === 1) {
+    alertBox.classList.add("alert-danger"); // red
+  }
+
+  alertBox.innerHTML = `
+    <div class="wrapper">
+      <div class="icon-wrapper"><img src="{{ url_for('static', filename='../static/icons/triangle-alert.png') }}" width="24"/></div>
+      <div>
+        <p>${message}</p>
+        <div class="description">${vehicle}</div>
+      </div>
+    </div>
+  `;
+  container.appendChild(alertBox);
+
+  // ✅ Store in sidebar history
+  const historyBox = alertBox.cloneNode(true);
+  const history = document.getElementById("alert-history");
+  if (history) history.appendChild(historyBox);
+
+  // ✅ Play different sound
+  let sound;
+  if (index === 0) {
+    sound = document.getElementById("alert-sound-1");
+  } else if (index === 1) {
+    sound = document.getElementById("alert-sound-2");
+  }
+  if (sound) {
+    sound.muted = false;
+    sound.currentTime = 0;
+    sound.play().catch(err => console.log("Autoplay blocked:", err));
+  }
+
+  // Auto-remove floating alert after 5s
+  setTimeout(() => {
+    alertBox.remove();
+    if (!container.hasChildNodes()) {
+      container.style.display = "none";
+    }
+  }, 5000);
+}
+
+
+// Trigger only 2 alerts after page load
+// Trigger only 2 alerts after page load
+window.addEventListener("load", () => {
+  const alerts = [
+    { msg: "VEHICLE SPEEDING DETECTED NEARBY!!", veh: "AP00B0001" },
+    { msg: "HIGH ALERT! VEHICLE DETECTED IN COLLISION ZONE!!", veh: "AP00B2645" }
+  ];
+
+  // ⏳ Wait 10s after load
+  setTimeout(() => {
+    showAlert(alerts[0].msg, alerts[0].veh, 0); // Yellow + sound1
+
+    // ⏳ Wait 5s more for second alert
+    setTimeout(() => {
+      showAlert(alerts[1].msg, alerts[1].veh, 1); // Red + sound2
+    }, 5000);
+
+  }, 10000);
+});
+
+
+</script>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      // ------- state -------
+      let map, marker, watchId;
+      let nearbyMarkers = []; // leaflet markers for nearby vehicles
+      let nearbyData = []; // last fetched nearby vehicles
+      let showMarkers = true;
+      let fetchIntervalId = null;
+      let showPopups = true;
+
+      // Sidebar toggle for tablet/mobile
+      document.addEventListener("DOMContentLoaded", () => {
+        // Only create sidebar toggle on tablet/mobile
+        if (window.innerWidth <= 1024) {
+          const btn = document.createElement("button");
+          btn.id = "sidebar-toggle";
+          btn.textContent = "☰ Nearby";
+          document.body.appendChild(btn);
+
+          btn.addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+
+            // Optional: fetch nearby vehicles again when sidebar opens
+            if (sidebar.classList.contains("active")) {
+              fetchNearbyAndRender(); // this will populate #nearby-list
+            }
+          });
+        }
+      });
+
+      // ------- utilities -------
+      function clearNearbyMarkers() {
+        nearbyMarkers.forEach((m) => map.removeLayer(m));
+        nearbyMarkers = [];
+      }
+
+      function addNearbyMarkers(data) {
+        clearNearbyMarkers();
+        data.forEach((item) => {
+          if (!item.location) return;
+
+          const popupContent = `
+      <b>Vehicle Number:</b> ${item.vehicleNumber || "--"}<br>
+      <b>Vehicle Type:</b> ${item.vehicleType || "--"}<br>
+      <b>Speed:</b> ${item.speed || 0} km/h<br>
+      <b>Date:</b> ${
+        item.time ? new Date(item.time).toLocaleDateString() : "--"
+      }<br>
+      <b>Time:</b> ${
+        item.time ? new Date(item.time).toLocaleTimeString() : "--"
+      }
+    `;
+
+          const m = L.marker([item.location.lat, item.location.lng], {
+            icon: L.icon({
+              iconUrl:
+                "{{ url_for('static', filename='../static/icons/car.png') }}",
+              iconSize: [32, 32],
+            }),
+          }).addTo(map);
+
+          // 👇 use tooltip instead of popup so all show at once
+          if (showPopups) {
+            m.bindTooltip(popupContent, {
+              permanent: true,
+              direction: "top",
+              offset: [0, -20],
+              opacity: 0.9,
+            }).openTooltip();
+          }
+
+          nearbyMarkers.push(m);
+        });
+      }
+
+      // ------- init map -------
+
+      function initMap() {
+        const defaultLoc = [16.5062, 80.648];
+        map = L.map("map").setView(defaultLoc, 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(map);
+
+        const carIcon = L.icon({
+          iconUrl:
+            "{{ url_for('static', filename='../static/icons/car.png') }}",
+          iconSize: [40, 40],
+        });
+        marker = L.marker(defaultLoc, { icon: carIcon }).addTo(map);
+      }
+      // ------- user data & reverse geocode -------
+      async function loadUserDetails() {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          alert("You must log in first!");
+          window.location.href = "signin.html";
+          return;
+        }
+        try {
+          const res = await fetch("{{ url_for('get_user_details') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          });
+          const result = await res.json();
+          if (result.success) {
+            document.getElementById("owner-name").textContent =
+              result.fullname || "User";
+            document.getElementById("location-name").textContent =
+              "Fetching live location...";
+            document.getElementById("vehicle-number").textContent =
+              result.vehicleNumber || "--";
+          }
+        } catch (err) {
+          console.error("Error fetching user data", err);
+        }
+      }
+
+      async function reverseGeocodeAndSetName(lat, lng) {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`
+          );
+          const data = await res.json();
+          const fullName =
+            data.display_name || `Lat:${lat.toFixed(4)},Lng:${lng.toFixed(4)}`;
+          const shortName = (fullName.split(",")[0] || fullName).trim();
+          document.getElementById("location-name").textContent = shortName;
+        } catch (err) {
+          console.error("Reverse geocode failed", err);
+          document.getElementById(
+            "location-name"
+          ).textContent = `Lat:${lat.toFixed(4)},Lng:${lng.toFixed(4)}`;
+        }
+      }
+
+      let markerMoving = false;
+
+      function moveMarkerSmoothly(marker, newLatLng, duration = 1000) {
+        if (!marker) return;
+
+        const start = marker.getLatLng();
+        const end = L.latLng(newLatLng);
+        const startTime = performance.now();
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          const t = Math.min(elapsed / duration, 1); // 0 → 1
+          const lat = start.lat + (end.lat - start.lat) * t;
+          const lng = start.lng + (end.lng - start.lng) * t;
+
+          marker.setLatLng([lat, lng]);
+
+          if (t < 1) {
+            requestAnimationFrame(animate);
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // ------- tracking -------
+      function startTracking() {
+        if (!navigator.geolocation) {
+          alert("Geolocation not supported by browser");
+          return;
+        }
+
+        let lastLat = null,
+          lastLng = null;
+
+        function haversine(lat1, lng1, lat2, lng2) {
+          const R = 6371e3; // meters
+          const toRad = (deg) => (deg * Math.PI) / 180;
+          const dLat = toRad(lat2 - lat1);
+          const dLng = toRad(lng2 - lng1);
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) *
+              Math.cos(toRad(lat2)) *
+              Math.sin(dLng / 2) *
+              Math.sin(dLng / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          return R * c; // distance in meters
+        }
+
+        watchId = navigator.geolocation.watchPosition(
+          async (pos) => {
+            const { latitude, longitude, speed, accuracy } = pos.coords;
+
+            // ✅ 2. Ignore tiny movements (< 5 meters)
+            if (lastLat !== null && lastLng !== null) {
+              const dist = haversine(lastLat, lastLng, latitude, longitude);
+              if (dist < 2) return;
+            }
+
+            lastLat = latitude;
+            lastLng = longitude;
+
+            const newPos = [latitude, longitude];
+            map.setView(newPos, 18, { animate: true });
+            moveMarkerSmoothly(marker, newPos, 1000);
+
+            // update localized name
+            reverseGeocodeAndSetName(latitude, longitude);
+
+            // update speed display
+            let kmh = speed ? (speed * 3.6).toFixed(1) : 0;
+            document.getElementById("speed-display").textContent =
+              kmh < 1 ? "0 km/h" : `${kmh} km/h`;
+
+            // push status to server
+            const userId = localStorage.getItem("userId");
+            if (userId) {
+              try {
+                await fetch("{{ url_for('update_vehicle_status') }}", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    userId,
+                    speed: parseFloat(kmh),
+                    location: { lat: latitude, lng: longitude },
+                    datetime: new Date().toISOString(),
+                  }),
+                });
+              } catch (err) {
+                console.error("Failed to update vehicle status", err);
+              }
+            }
+          },
+          (err) => {
+            console.error("Geolocation error", err);
+          },
+          { enableHighAccuracy: true, maximumAge: 0 }
+        );
+      }
+
+      function stopTracking() {
+        if (watchId !== undefined && watchId !== null) {
+          navigator.geolocation.clearWatch(watchId);
+          watchId = null;
+        }
+      }
+
+      // ------- nearby fetch & render -------
+      async function fetchNearbyAndRender() {
+        const userId = localStorage.getItem("userId");
+        if (!userId) return;
+
+        try {
+          const res = await fetch("{{ url_for('get_nearby_vehicles') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          });
+          const data = await res.json();
+          if (!data.success) {
+            console.warn("get_nearby_vehicles response", data);
+            document.getElementById(
+              "nearby-list"
+            ).innerHTML = `<div class="meta">No nearby vehicles</div>`;
+            document.getElementById("nearby-count").textContent = "0";
+            clearNearbyMarkers();
+            nearbyData = [];
+            return;
+          }
+
+          nearbyData = data.nearby || [];
+          renderNearbySidebar(nearbyData);
+          document.getElementById("nearby-count").textContent = String(
+            nearbyData.length || 0
+          );
+
+          if (showMarkers) {
+            addNearbyMarkers(nearbyData);
+          } else {
+            clearNearbyMarkers();
+          }
+        } catch (err) {
+          console.error("Error fetching nearby", err);
+        }
+      }
+
+      function renderNearbySidebar(list) {
+        const container = document.getElementById("nearby-list");
+        container.innerHTML = "";
+        if (!list || list.length === 0) {
+          container.innerHTML =
+            '<div class="meta">No nearby vehicles within 1.5 km</div>';
+          return;
+        }
+        list.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "vehicle-card";
+          card.innerHTML = `
+        <div class="top">
+          <div>
+            <h3>${item.vehicleType}</h3>
+            <div class="meta">${item.vehicleNumber || "--"}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="meta">${item.speed || 0} km/h</div>
+            <div class="meta" style="font-size:12px">
+              ${item.time ? new Date(item.time).toLocaleDateString() : ""} 
+              ${item.time ? new Date(item.time).toLocaleTimeString() : ""}
+            </div>
+          </div>
+        </div>
+      `;
+          container.appendChild(card);
+        });
+      }
+
+      // ------- marker toggle handler -------
+      //-----------------popup message handler----------------
+
+      document.addEventListener("click", (e) => {
+        if (e.target && e.target.id === "toggle-markers") {
+          showMarkers = !showMarkers;
+          document.getElementById("toggle-markers").textContent = showMarkers
+            ? "Hide markers"
+            : "Show markers";
+          if (showMarkers) addNearbyMarkers(nearbyData);
+          else clearNearbyMarkers();
+        }
+
+        if (e.target && e.target.id === "toggle-popups") {
+          showPopups = !showPopups;
+          document.getElementById("toggle-popups").textContent = showPopups
+            ? "Hide popups"
+            : "Show popups";
+
+          // re-render markers with/without tooltips
+          clearNearbyMarkers();
+          if (showMarkers) addNearbyMarkers(nearbyData);
+        }
+      });
+
+      // ------- periodic polling -------
+      function startPollingNearby() {
+        if (fetchIntervalId) clearInterval(fetchIntervalId);
+        fetchNearbyAndRender(); // initial
+        fetchIntervalId = setInterval(fetchNearbyAndRender, 1000); // every 1s
+      }
+      function stopPollingNearby() {
+        if (fetchIntervalId) clearInterval(fetchIntervalId);
+        fetchIntervalId = null;
+      }
+
+      // ------- timer UI & stop button -------
+      let timerInterval = null;
+      let elapsedSeconds = 0;
+      function startStopTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          elapsedSeconds++;
+          const hours = String(Math.floor(elapsedSeconds / 3600)).padStart(
+            2,
+            "0"
+          );
+          const minutes = String(
+            Math.floor((elapsedSeconds % 3600) / 60)
+          ).padStart(2, "0");
+          const seconds = String(elapsedSeconds % 60).padStart(2, "0");
+          document.getElementById(
+            "stop-timer"
+          ).textContent = `${hours}:${minutes}:${seconds}`;
+        }, 1000);
+      }
+
+      document
+        .getElementById("stop-btn")
+        .addEventListener("click", async () => {
+          const userId = localStorage.getItem("userId");
+
+          // Mark user inactive in DB
+          if (userId) {
+            try {
+              await fetch("{{ url_for('update_vehicle_status') }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  userId,
+                  active: false, // 👈 tell backend you stopped
+                }),
+              });
+            } catch (err) {
+              console.error("Failed to update active=false", err);
+            }
+          }
+
+          // stop polling & tracking locally
+          stopPollingNearby();
+          stopTracking();
+          clearNearbyMarkers();
+          document.getElementById("nearby-list").innerHTML = ""; // clear cards
+          document.getElementById("nearby-count").textContent = "0";
+
+          // go back
+          window.location.href = "{{ url_for('dashboard') }}";
+        });
+
+      // ------- boot sequence -------
+      async function boot() {
+        initMap();
+        await loadUserDetails();
+        startTracking();
+        startPollingNearby();
+
+        // set toggle button text since we start with markers visible
+        document.getElementById("toggle-markers").textContent = "Hide markers";
+        document.getElementById("toggle-popups").textContent = "Hide popups";
+
+        startStopTimer();
+      }
+
+      // Start on DOM loaded
+      document.addEventListener("DOMContentLoaded", boot);
+    </script>
+  </body>
+</html>

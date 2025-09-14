@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <style>
+      /* Remove border when input is focused or has value */
+      input {
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        padding: 2%;
+      }
+      input:focus,
+      input:not(:placeholder-shown) {
+        border: none;
+      }
+      /* Optional: style wrapper to keep layout consistent */
+      .input-field,
+      .input-field-2 {
+        padding: 0;
+      }
+      /* Remove border on focus for the wrapper if you want exactly no border on container */
+      .input-field input:focus,
+      .input-field-2 input:focus {
+        border: none;
+      }
+      .input-field {
+        position: relative;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding-right: 30px; /* space for the chevron */
+        background-color: white;
+        display: flex;
+        align-items: center;
+        height: 40px; /* adjust for consistent height with inputs */
+      }
+
+      .input-field select {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 8px 10px;
+        appearance: none; /* remove default arrow */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .input-field select:focus {
+        border: none;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screens-personal">
+      <div class="header">
+        <a href="{{ url_for('personal_info') }}"
+          ><div class="container">
+            <img class="arrow-left" src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}" /></div
+        ></a>
+        <div class="div">
+          <div class="title">Vehicle Information</div>
+        </div>
+        <div class="content">
+          <div class="text-wrapper">2/3</div>
+        </div>
+      </div>
+      <div class="progress-indicator">
+        <div class="bar"></div>
+        <div class="bar-2"></div>
+        <div class="bar-3"></div>
+      </div>
+      <div class="content-2">
+        <div class="input">
+  <div class="label">Vehicle Type</div>
+  <div class="input-field">
+    <select id="vehicle-type-select" name="vehicle-type" required>
+      <option value="" disabled selected>Select the Vehicle Type</option>
+      <option value="bike">Bike</option>
+      <option value="car">Car</option>
+      <option value="bus">Bus</option>
+      <option value="truck">Truck</option>
+    </select>
+  </div>
+</div>
+
+
+        <div class="input">
+          <div class="label">Vehicle Number</div>
+          <div class="input-field-2">
+            <input
+  type="text"
+  name="vehicle-number"
+  id="vehicleNumber" 
+  placeholder="AP00B0000"
+  autocomplete="off"
+/>
+
+          </div>
+        </div>
+        <div class="frame">
+          <div class="input">
+            <div class="label">License Number</div>
+            <div class="input-field-2">
+              <input
+  type="text"
+  name="licenseNumber"
+  id="licenseNumber" 
+  maxlength="16"
+  pattern="[A-Z]{2}\d{2}\d{4}\d{7}"
+  placeholder="SS00YYYYNNNNNNN"
+/>
+            </div>
+          </div>
+        </div>
+        <div class="frame">
+          <div class="input">
+            <div class="label">Aadhar</div>
+            <div class="input-field-2">
+              <input
+  type="text"
+  id="aadhar-input"
+  name="aadhar"
+  placeholder="XXXX-XXXX-XXXX"
+  maxlength="14"              
+  pattern="\d{4}-\d{4}-\d{4}" 
+  inputmode="numeric"         
+  autocomplete="off"
+/>
+            </div>
+          </div>
+        </div>
+        <a href="{{ url_for('verification') }}" class="button" id="sendOtpBtn">
+  <div class="text">SEND OTP</div>
+  <div class="icon"></div>
+</a>
+
+      </div>
+    </div>
+     <script>
+  const aadharInput = document.getElementById('aadhar-input');
+
+  aadharInput.addEventListener('input', function () {
+    let digits = this.value.replace(/\D/g, '').slice(0, 12);
+    let formatted = digits.replace(/(\d{4})(?=\d)/g, '$1-');
+    this.value = formatted;
+  });
+
+  document.getElementById('sendOtpBtn').addEventListener('click', async function (event) {
+    event.preventDefault();
+
+    const vehicleType = document.getElementById('vehicle-type-select').value;
+    const vehicleNumber = document.getElementById('vehicleNumber').value.trim();
+    const licenseNumber = document.getElementById('licenseNumber').value.trim();
+    const aadhar = document.getElementById('aadhar-input').value.trim();
+
+    const licenseRegex = /^[A-Z]{2}\d{2}\d{4}\d{7}$/;
+    const vehicleNumberRegex = /^[A-Z]{2}\d{2}[A-Z]{1,2}\d{4}$/;
+    const aadharRegex = /^\d{4}-\d{4}-\d{4}$/;
+
+    if (!vehicleType) return alert('Please select a vehicle type.');
+    if (!vehicleNumber) return alert('Please enter your vehicle number.');
+    if (!licenseNumber) return alert('Please enter your license number.');
+    if (!aadhar) return alert('Please enter your Aadhar number.');
+
+    if (!licenseRegex.test(licenseNumber)) return alert('Invalid license number.\nFormat: SS00YYYYNNNNNNN');
+    if (!vehicleNumberRegex.test(vehicleNumber)) return alert('Invalid vehicle number.\nFormat: SS00AA0000');
+    if (!aadharRegex.test(aadhar)) return alert('Invalid Aadhar.\nFormat: XXXX-XXXX-XXXX');
+
+    const userId = localStorage.getItem("userId");
+    const phone = localStorage.getItem("phone"); // phone saved earlier in personalinfo.html
+
+    if (!userId || !phone) {
+      alert("User not logged in. Please complete personal info first.");
+      return;
+    }
+
+    // ✅ Save vehicle info locally until OTP is verified
+    localStorage.setItem("vehicleInfo", JSON.stringify({ vehicleType, vehicleNumber, licenseNumber, aadhar }));
+
+    // ✅ Send OTP
+    try {
+      const response = await fetch("{{ url_for('send_otp') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: phone, userId: userId })
+      });
+
+      const result = await response.json();
+      alert(result.message);
+
+      if (result.success) {
+        window.location.href = "{{ url_for('verification') }}";
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error sending OTP");
+    }
+  });
+</script>
+
+
+  </body>
+</html>

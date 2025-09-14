@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <style>
+      /* override global.css for header */
+      .screens-profile .header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .screens-profile .header .div {
+        width: auto !important;
+        height: auto !important;
+        margin: 0;
+        display: flex;
+        align-items: center;
+      }
+      .screens-profile input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      /* Resize profile avatar in profile-edit page */
+      .screens-profile .profile .element-d-avatars {
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto; /* center horizontally */
+      }
+      .screens-profile .profile .element-d-avatars img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screens-profile">
+      <!-- Header (just back arrow) -->
+      <div class="header">
+        <div class="div">
+          <div class="div-2" id="backBtn">
+            <a href="{{ url_for('profile') }}"><img class="arrow-left" src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}" /></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Picture -->
+      <div class="profile">
+        <div class="div-2">
+          <div class="element-d-avatars">
+            <img src="{{ url_for('static', filename='../static/icons/17.png') }}"  alt="" />
+          </div>
+          <img class="camera" src="{{ url_for('static', filename='../static/icons/Camera.png') }}"  />
+        </div>
+      </div>
+
+      <!-- Editable Form -->
+      <div class="container-3">
+        <div class="input">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="tenant123@gmail.com" required />
+        </div>
+
+        <div class="input">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Tenant" required />
+        </div>
+
+        <div class="input">
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" value="+91" maxlength="13" required />
+        </div>
+
+        <div class="input">
+          <label for="dob">Date of Birth</label>
+          <input id="dob" type="text" placeholder="01-01-2000" readonly />
+        </div>
+
+        <div class="input">
+          <label for="aadhar">Aadhar Number</label>
+          <input id="aadhar" type="text" placeholder="XXXX-XXXX-XXXX" readonly />
+        </div>
+
+        <button class="button-2" id="updateBtn">
+          <div class="text">Update Changes</div>
+        </button>
+      </div>
+    </div>
+    <script>
+  // ✅ Back navigation (to previous page)
+  document.getElementById("backBtn").onclick = () => {
+    window.location.href="{{ url_for('profile') }}"
+  };
+
+  // ✅ Fetch and fill user details
+  document.addEventListener("DOMContentLoaded", async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    try {
+      const res = await fetch("{{ url_for('get_personal_details') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById("email").value = data.email || "";
+        document.getElementById("name").value = data.fullname || "";
+
+        let phone = data.phone || "";
+        if (phone && !phone.startsWith("+91")) {
+          phone = "+91" + phone.replace(/^\+?91?/, "");
+        }
+        document.getElementById("phone").value = phone;
+
+        document.getElementById("dob").value = data.dob || "";
+        document.getElementById("aadhar").value = data.aadhar || "";
+      }
+    } catch (err) {
+      console.error("Error fetching user details:", err);
+    }
+  });
+
+  // ✅ Update changes (only email, name, phone)
+  document.getElementById("updateBtn").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const name = document.getElementById("name").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+
+    if (!phone.startsWith("+91")) {
+      phone = "+91" + phone.replace(/^\+?91?/, "");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    const phoneRegex = /^\+91[0-9]{10}$/;
+    if (phone && !phoneRegex.test(phone)) {
+      alert("Please enter a valid 10-digit phone number with +91.");
+      return;
+    }
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    try {
+      const res = await fetch("{{ url_for('save_personalinfo') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: userId,
+          fullname: name,
+          dob: document.getElementById("dob").value, // unchanged
+          phone,
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Profile updated successfully!");
+        window.location.href="{{ url_for('profile_edit') }}";
+      } else {
+        alert(data.message || "Update failed!");
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+    }
+  });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="screens-sign-in">
+      <header class="header">
+        <a href="">
+          <div class="container">
+            <img class="arrow-left" src="{{ url_for('static', filename='../static/icons/arrow-left.png') }}" />
+          </div>
+        </a>
+        <div class="title">Sign In</div>
+        <div class="container"></div>
+      </header>
+
+      <div class="content">
+        <div class="div-wrapper">
+          <p class="text-wrapper">Continue sign in by verifying the email</p>
+        </div>
+
+        <!-- Email Input -->
+        <div class="input">
+          <label class="label" for="email">Email</label>
+          <div class="input-field">
+            <input
+              id="email"
+              class="placeholder"
+              placeholder="something@gmail.com"
+              type="email"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="input">
+          <label class="div" for="password">Password</label>
+          <div class="input-field">
+            <input
+              id="password"
+              class="placeholder-2"
+              type="password"
+              placeholder="Enter Your Password"
+              style="
+              border:none;
+              box-shadow:none;
+              outline: none;
+              "
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Continue Button -->
+        
+          <button class="button" id="continueBtn" type="button">
+          <div class="text">Continue</div>
+          <div class="icon">
+            <img class="arrow-right" src="{{ url_for('static', filename='../static/icons/arrow-right (2).png') }}" />
+          </div>
+        </button>
+        
+      </div>
+
+      <!-- Sign up redirect -->
+      <div class="don-t-have-an-wrapper">
+        <p class="don-t-have-an">
+          <span class="span">Don’t have an account? </span>
+          <a href="{{ url_for('create_account') }}" class="text-wrapper-2">Sign up</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- ✅ JavaScript for Email Validation -->
+   <script>
+  document.getElementById('continueBtn').addEventListener('click', async function (e) {
+    e.preventDefault(); // stop auto navigation
+
+    const emailInput = document.getElementById('email').value.trim();
+    const passwordInput = document.getElementById('password').value.trim();
+
+    if (!emailInput || !passwordInput) {
+      alert('Please fill in both email and password');
+      return;
+    }
+
+    try {
+      const response = await fetch("{{ url_for('login') }}", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput, password: passwordInput })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Save user details
+        localStorage.setItem('userId', result.userId);
+        localStorage.setItem('email', result.email);
+        // now navigate
+        window.location.href = "{{ url_for('dashboard') }}";
+      } else {
+        alert('Error: ' + result.message);
+      }
+    } catch (err) {
+      alert('Server error: ' + err.message);
+    }
+  });
+</script>
+  </body>
+</html>

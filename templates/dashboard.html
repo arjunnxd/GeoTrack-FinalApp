@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+    <!-- ✅ Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+      .screens-dashboard .dialog .content-2 {
+        display: flex;
+        flex-direction: column; /* instead of row */
+        align-items: flex-start; /* left-align text */
+        gap: 4px; /* small spacing */
+      }
+
+      #owner-name {
+        font-weight: bold;
+        font-size: 16px;
+      }
+      #map {
+        width: 100%;
+        height: 400px;
+        border-radius: 12px;
+      }
+      #location-name {
+        white-space: normal !important; /* allow multiple lines */
+        word-break: break-word !important; /* break long names */
+        overflow-wrap: break-word !important;
+        max-width: 250px; /* adjust for your layout */
+        text-align: left;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="screens-dashboard">
+      <!-- Header -->
+       
+      <div class="header">
+        <div class="container">
+          <a href="{{ url_for('alerts') }}"><img class="bell" src="{{ url_for('static', filename='../static/icons/Bell.png') }}" /></a>
+        </div>
+        <div class="element-avatars-wrapper">
+          <div class="element-avatars">
+            <a href="{{ url_for('profile') }}"><img src="{{ url_for('static', filename='../static/icons/17.png') }}" alt="" /></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Text -->
+      <div class="div-wrapper">
+        <p class="text-wrapper">
+          Click Start to share your location and see who’s nearby.
+        </p>
+      </div>
+
+      <!-- ✅ Google Map Container -->
+      <div id="map"></div>
+
+      <!-- Dialog Info -->
+      <div class="dialog">
+        <div class="content">
+          <div class="content-2">
+            <div id="owner-name" class="text-wrapper-2">Nithish</div>
+            <div id="location-name" class="text-wrapper-3">Vijayawada</div>
+          </div>
+          <img class="chevron-right" src="{{ url_for('static', filename='../static/icons/chevron-right.png') }}" />
+        </div>
+        <div class="separator"></div>
+        <div class="dialog-footer">
+          <div class="container-2">
+            <div class="text-wrapper-4">AP00B0001</div>
+            <div id="speed-display" class="text-wrapper-4">0 km/h</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Button -->
+      <a href="{{ url_for('dashboard_main') }}">
+        <div class="start">
+          <div class="button-2">
+            <div class="check-wrapper">
+              <img class="check" src="{{ url_for('static', filename='../static/icons/Check.png') }}" />
+            </div>
+          </div>
+          <div class="text-wrapper-5">Tap to Start</div>
+        </div>
+      </a>
+    </div>
+    <!-- ✅ Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+      //alert.html navigation
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const container = document.querySelector(
+          ".screens-dashboard .container"
+        );
+        if (container) {
+          container.addEventListener("click", () => {
+            window.location.href = "{{ url_for('alerts') }}"; // redirect
+          });
+        }
+      });
+
+      let map, marker, watchId;
+
+      async function initMap() {
+        // Default location (Vijayawada)
+        const defaultLoc = [16.5062, 80.648];
+
+        // Initialize Leaflet map
+        map = L.map("map").setView(defaultLoc, 15);
+
+        // Load OpenStreetMap tiles
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(map);
+
+        // Vehicle marker with car icon
+        const carIcon = L.icon({
+          iconUrl: "{{ url_for('static', filename='../static/icons/car.png') }}",
+          iconSize: [40, 40],
+        });
+
+        marker = L.marker(defaultLoc, { icon: carIcon }).addTo(map);
+
+        // Load user details
+        loadUserDetails();
+
+        // Start GPS tracking
+        startTracking();
+      }
+
+      // ✅ Fetch user details from backend
+      async function loadUserDetails() {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          alert("You must log in first!");
+          window.location.href = "{{ url_for('signin') }}";
+          return;
+        }
+
+        try {
+          const response = await fetch("{{ url_for('get_user_details') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          });
+          const result = await response.json();
+
+          if (result.success) {
+            document.getElementById("owner-name").textContent =
+              result.fullname || "User";
+            document.getElementById("location-name").textContent =
+              "Fetching live location...";
+            document.querySelector(".text-wrapper-4").textContent =
+              result.vehicleNumber || "--";
+          }
+        } catch (err) {
+          console.error("Error fetching user data:", err);
+        }
+      }
+
+      // ✅ Live tracking & speed
+      // ✅ Live tracking & speed with location name
+      function startTracking() {
+        if (!navigator.geolocation) {
+          alert("Geolocation is not supported by your browser");
+          return;
+        }
+
+        watchId = navigator.geolocation.watchPosition(
+          async (pos) => {
+            const { latitude, longitude, speed } = pos.coords;
+            const newPos = [latitude, longitude];
+
+            // Update map & marker
+            map.setView(newPos, 15);
+            marker.setLatLng(newPos);
+
+            // ✅ Reverse Geocoding using Nominatim
+            try {
+              const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+              );
+              const data = await res.json();
+              const locationName = data.display_name || "Unknown location";
+
+              document.getElementById("location-name").textContent =
+                locationName;
+            } catch (err) {
+              console.error("Error fetching location name:", err);
+              document.getElementById(
+                "location-name"
+              ).textContent = `Lat: ${latitude.toFixed(
+                4
+              )}, Lng: ${longitude.toFixed(4)}`;
+            }
+
+            // ✅ Speed (m/s → km/h)
+            const kmh = speed ? (speed * 3.6).toFixed(1) : 0;
+            document.getElementById(
+              "speed-display"
+            ).textContent = `${kmh} km/h`;
+          },
+          (err) => {
+            console.error("Error getting location:", err);
+            alert("Unable to fetch live location");
+          },
+          { enableHighAccuracy: true, maximumAge: 0 }
+        );
+      }
+
+      // Start Leaflet map
+      window.onload = initMap;
+    </script>
+  </body>
+</html>
