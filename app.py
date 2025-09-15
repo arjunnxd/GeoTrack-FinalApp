@@ -376,6 +376,7 @@ def get_nearby_vehicles():
             })
 
     return jsonify({"success": True, "nearby": nearby})
+
 @app.route("/make_emergency_call", methods=["POST"])
 def make_emergency_call():
     try:
@@ -383,25 +384,72 @@ def make_emergency_call():
         userId = data.get("userId")
 
         if not userId:
-            return jsonify({"success": False, "message": "UserId required"}), 400
+            return jsonify({"success": False, "message": "UserId is required"}), 400
 
-        # Fetch user phone from database
+        # ✅ Fetch user phone
         user = users.find_one({"_id": ObjectId(userId)})
         if not user or "phone" not in user:
-            return jsonify({"success": False, "message": "Phone number not found"}), 404
+            return jsonify({"success": False, "message": "User phone number not found"}), 404
 
-        phone_number = user["phone"]
+        # ✅ Get latest vehicle status
+        vehicle_status = db.vehicle_status.find_one({"userId": userId})
+        location_link = ""
+        vehicle_number = "Unknown"
+        if vehicle_status:
+            # Vehicle number
+            if "vehicleNumber" in vehicle_status:
+                vehicle_number = vehicle_status["vehicleNumber"]
 
-        # Place a call using Twilio
-        call = twilio_client.calls.create(
-            to=phone_number,
-            from_=TWILIO_PHONE_NUMBER,
-            twiml='<Response><Say voice="alice">This is an emergency alert. Please respond immediately.</Say></Response>'
-        )
+            # Location
+            if "location" in vehicle_status:
+                lat = vehicle_status["location"]["lat"]
+                lng = vehicle_status["location"]["lng"]
+                location_link = f"https://www.google.com/maps?q={lat},{lng}"
 
-        return jsonify({"success": True, "sid": call.sid})
+        # ✅ Current Date & Time
+        timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+
+        # ✅ Numbers to call
+        phone_numbers = [user["phone"], "+917801081681", "+919502396074"]
+
+        call_sids, message_sids = [], []
+
+        for number in phone_numbers:
+            # 1️⃣ Place the call
+            call = twilio_client.calls.create(
+                to=number,
+                from_=TWILIO_PHONE_NUMBER,
+                twiml=f'<Response><Say voice="alice">Emergency Alert! Vehicle {vehicle_number} raised SOS at {timestamp}. Please respond immediately.</Say></Response>'
+            )
+            call_sids.append(call.sid)
+
+            # 2️⃣ Send SMS
+            sms_body = (
+                f"🚨 EMERGENCY ALERT 🚨\n"
+                f"Vehicle: {vehicle_number}\n"
+                f"Time: {timestamp}\n"
+            )
+            if location_link:
+                sms_body += f"Location: {location_link}"
+            else:
+                sms_body += "Location: Not available."
+
+            message = twilio_client.messages.create(
+                to=number,
+                from_=TWILIO_PHONE_NUMBER,
+                body=sms_body
+            )
+            message_sids.append(message.sid)
+
+        return jsonify({
+            "success": True,
+            "call_sids": call_sids,
+            "message_sids": message_sids
+        })
 
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)
