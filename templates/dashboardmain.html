@@ -185,7 +185,7 @@
         bottom: 12px;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 2000;
+        z-index: 1000;
         text-align: center;
         text-decoration: none;
         display: flex;
@@ -222,6 +222,61 @@
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
         cursor: pointer;
+      }
+
+      .sos-btn {
+        position: absolute;
+        top: 9%; /* place above stop button */
+        left: 5.7%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 100%;
+      }
+
+      #sos-popup {
+        display: none;
+        position: fixed;
+        top: 10%;
+        left: 28%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        z-index: 6000;
+      }
+
+      #sos-popup h2 {
+        color: red;
+        margin-bottom: 10px;
+      }
+
+      #sos-popup p {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      /* Yellow alert (warning) */
+      .alert-warning {
+        background: #fff3cd;
+        border: 1px solid #ffeeba;
+      }
+      .alert-warning p {
+        color: #856404;
+      }
+
+      /* Red alert (danger) */
+      .alert-danger {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+      }
+      .alert-danger p {
+        color: #721c24;
       }
 
       /* ✅ Responsive Breakpoints */
@@ -295,8 +350,8 @@
         /* SOS button (above stop button) */
         .sos-btn {
           position: absolute;
-          top: 4% !important; /* place above stop button */
-          left: 20% !important;
+          top: 6% !important; /* place above stop button */
+          left: 22% !important;
           transform: translateX(-50%);
           z-index: 2000;
           text-align: center;
@@ -387,60 +442,7 @@
         gap: 12px;
       }
       /* SOS Popup */
-      .sos-btn {
-        position: absolute;
-        top: 9%; /* place above stop button */
-        left: 5.7%;
-        transform: translateX(-50%);
-        z-index: 2000;
-        text-align: center;
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-radius: 100%;
-      }
-
-      #sos-popup {
-        display: none;
-        position: fixed;
-        top: 10%;
-        left: 28%;
-        transform: translate(-50%, -50%);
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        z-index: 6000;
-      }
-
-      #sos-popup h2 {
-        color: red;
-        margin-bottom: 10px;
-      }
-
-      #sos-popup p {
-        margin-bottom: 20px;
-        color: #333;
-      }
-      /* Yellow alert (warning) */
-      .alert-warning {
-        background: #fff3cd;
-        border: 1px solid #ffeeba;
-      }
-      .alert-warning p {
-        color: #856404;
-      }
-
-      /* Red alert (danger) */
-      .alert-danger {
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-      }
-      .alert-danger p {
-        color: #721c24;
-      }
+      
     </style>
   </head>
 
